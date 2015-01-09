@@ -12,7 +12,7 @@ wallpapers = 'http://www.reddit.com/r/wallpapers/top.json?t=week&limit=25'
 
 
 try:
-    response = urllib.request.urlopen(wallpapers)
+    response = urllib.request.urlopen(wallpapers, timeout=5)
     content = response.read()
     json_data = json.loads(content.decode('utf-8'))
 
@@ -44,5 +44,17 @@ def reddit_paper(data):
 
 imgur_url = reddit_paper(json_data)
 
+print(imgur_url)
 
 
+def get_from_imgur(input_url):
+    try:
+        data = urllib.request.urlopen(input_url, timeout=5).read()
+        if len(data) > 0:
+            with open('wallpaper.jpg', 'wb') as out_file:
+                out_file.write(data)
+
+    except urllib.request.URLError as e:
+        print('Error, no image saved: ', e)
+
+get_from_imgur(imgur_url)
