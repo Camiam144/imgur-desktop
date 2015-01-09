@@ -3,23 +3,37 @@
 
 
 import urllib.request
+import json
+import random
+from pprint import pprint
 
-kitty = 'http://placekitten.com/'
+paper_num = random.randrange(0, 10)
+
+print(paper_num)
+
+
+#wallpapers = 'http://www.reddit.com/r/wallpapers/top.json?t=day&limit=10'
+
 
 try:
-    response = urllib.request.urlopen(kitty)
-    kittens = response.read()
-    body = kittens[559:1000]
+    #response = urllib.request.urlopen(wallpapers)
+    #bigjson = response.read()
 
-    with open('temp.txt', 'w') as out_file:
-        out_file.write(str(body))
-            #out_file.write(line)
+    with open('jsondata', 'r') as in_file:
+        tempjson = json.load(in_file)
 
-    with open('temp.txt', 'r') as in_file:
-        text = in_file.read()
+    '''
+    with open('tempout.txt', 'w') as out_file:
+        out_file.write(json.dumps(tempjson, indent=4))
+    '''
 
-    print(body)
+
+
+
+
+
+
 
 except urllib.request.URLError as e:
-    print('no kitties, error: ', e)
+    print('Everything sucks, error: ', e)
 
