@@ -6,38 +6,43 @@ import urllib.request
 import json
 import random
 
-
-paper_num = random.randrange(0, 10)
-
-print(paper_num)
-
-
-#wallpapers = 'http://www.reddit.com/r/wallpapers/top.json?t=day&limit=10'
-
 '''
+
+wallpapers = 'http://www.reddit.com/r/wallpapers/top.json?t=week&limit=25'
+
+
 try:
-    #response = urllib.request.urlopen(wallpapers)
-    #bigjson = response.read()
+    response = urllib.request.urlopen(wallpapers)
+    content = response.read()
+    json_data = json.loads(content.decode('utf-8'))
+
 
 except urllib.request.URLError as e:
     print('Everything sucks, error: ', e)
-'''
 
-with open('jsondata', 'r') as in_file:
-        tempjson = json.load(in_file)
-
-'''
 with open('tempout.txt', 'w') as out_file:
-        out_file.write(json.dumps(tempjson, indent=4))
+    out_file.write(json.dumps(json_data, indent=4))
+
 '''
+
+with open('tempout.txt', 'r') as in_file:
+        json_data = json.load(in_file)
+
 
 # define a function that navigates to the random wallpaper and check if it's from imgur.
-# imput data must be a json
+# input data must be a json
 
-def paper_getter(data, number):
+def reddit_paper(data):
+
+    number = random.randrange(0, 25)
 
     trial_domain = data["data"]["children"][number]["data"]["domain"]
 
-    Nsfw = data["data"]["children"][number]["data"]["over_18"]
+    if trial_domain == 'i.imgur.com':
+        wallpaper_url = data["data"]["children"][number]["data"]["url"]
+        return wallpaper_url
 
-    if trial_domain == 'i.imgur.com' and not Nsfw:
+imgur_url = reddit_paper(json_data)
+
+
+
